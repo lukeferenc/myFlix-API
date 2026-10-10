@@ -115,7 +115,8 @@ app.put('/users/:Username', auth, async (req, res) => {
 
   saveUser(user);
   const { Password: _, ...safe } = user;
-  res.json(safe);
+  // The JWT carries the username, so a rename needs a new token.
+  res.json({ ...safe, token: signToken(user) });
 });
 
 app.post('/users/:Username/movies/:MovieID', auth, (req, res) => {
